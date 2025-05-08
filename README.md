@@ -103,7 +103,7 @@ python3.12 -m venv .py312
 source .py312/bin/activate
 ```
 
-*   Install dependencies using pip and `gcc` (or `g++`):
+*   Install dependencies using pip 
 ```
 pip install -r requirements.txt
 python assistant.py 
