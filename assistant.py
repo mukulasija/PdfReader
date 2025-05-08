@@ -51,36 +51,41 @@ class Assistant:
             similar_chunks = self.db.get_similar_conversations(user_input, k=10)
             # print(f"simlar chunks are {similar_chunks}")
             # Initialize thought state
-            # custom_rag_template = f"answer this query: {user_input} based on these contexts {similar_chunks}"
+            custom_rag_template = f"answer this query: {user_input} based on these contexts {similar_chunks}"
             # custom_rag_template = (
             #     f"Extract all financial terms, their associated numerical values (e.g., percentages, monetary amounts, and time durations) "
             #     f"from the following context and answer this query: {user_input} based on these contexts: {similar_chunks}"
             # )
-            custom_rag_template = (
-                f"Extract the numerical values associated with the following financial terms from the context: "
-                f"annual revenue, profit, losses, interest rate, and any other financial terms mentioned. "
-                f"Answer the query '{user_input}' by including the corresponding financial terms and their numerical values in the response. "
-                f"Make sure to include the values in the response, but do not limit the answer to only numerical values. "
-                f"Context for reference: {similar_chunks}"
-            )
-
             # custom_rag_template = (
-            #     f"Act as a financial expert who can understand and interpret financial documents. "
-            #     f"Based on the context provided below, extract and calculate the necessary financial values to answer the user's query accurately. "
-            #     f"The user is asking about a specific financial term, which may include values such as annual revenue, profit, losses, "
-            #     f"interest rates, liabilities, or any other financial term. "
-            #     f"Provide the answer based on the context, ensuring to include all the relevant numerical values, units, and any necessary calculations or clarifications. "
-            #     f"Answer the query '{user_input}' based on the provided context: {similar_chunks}"
+            #     f"Extract the numerical values associated with the following financial terms from the context: "
+            #     f"annual revenue, profit, losses, interest rate, and any other financial terms mentioned. "
+            #     f"Answer the query '{user_input}' by including the corresponding financial terms and their numerical values in the response. "
+            #     f"Make sure to include the values in the response, but do not limit the answer to only numerical values. "
+            #     f"Context for reference: {similar_chunks}"
             # )
+
+            custom_rag_template = (
+                f"Act as a financial expert who can understand and interpret financial documents. "
+                f"Based on the context provided below, extract and calculate the necessary financial values to answer the user's query accurately. "
+                f"The user is asking about a specific financial term, which may include values such as annual revenue, profit, losses, "
+                f"interest rates, liabilities, or any other financial term. "
+                f"Provide the answer based on the context, ensuring to include all the relevant numerical values, units, and any necessary calculations or clarifications. "
+                f"Answer the query '{user_input}' based on the provided context: {similar_chunks}"
+            )
 
             final_response = chat(
                 model=self.model_name,
                 messages=[
                     {"role": "user", "content": custom_rag_template}
                 ],
-                options={"temperature": 0.8}
+                options={"temperature": 0.8},
+                stream = True
             )
-            print(final_response.message.content)
+            for chunk in final_response:
+                if chunk.message:
+                    # print(chunk.message.content)
+                    print(chunk.message.content, end="", flush=True)
+
         except Exception as e:
             error_msg = "I lost my train of thought. Mind if we start over?"
             print(f"\n❌ Sorry, I got distracted: {str(e)}")
