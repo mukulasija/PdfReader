@@ -68,7 +68,7 @@ class ConversationDB:
         conn.commit()
         conn.close()
 
-    def get_pdf_chunks(self, pdf_path: str, chunk_size: int = 500, chunk_overlap: int = 50) -> list:
+    def get_pdf_chunks(self, pdf_path: str, chunk_size: int = 300, chunk_overlap: int = 50) -> list:
         try:
             print(f"Reading and chunking PDF: {pdf_path}")
             reader = PdfReader(pdf_path)
