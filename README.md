@@ -53,7 +53,7 @@ python assistant.py
 
 On line 73 of `assistant.py`, the AI Friend object is created with the input file name provided by the user. This allows for easy integration of your own PDF files into the conversation.
 
-Note that you'll need to provide the full path to the PDF file when prompted for an input file name.
+Only Pdf name: for FinancialManagement.pdf file -> only write Assistant("FinancialManagement")
 
 ### Linux (Ubuntu/Debian-based systems)
 
